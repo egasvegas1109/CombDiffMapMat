@@ -12,6 +12,7 @@
         -- Перебираем все объекты в сцене
         for obj in selection do
         (
+            convertToPoly obj
             -- Проверяем, является ли объект полигональным
             if (classof obj == Editable_Poly) then
             (
@@ -70,7 +71,7 @@
         
     )
 
-    fn setMaterialIDs diffuseNameId = (
+    fn setMaterialIDs = (
         -- Перебираем все объекты в сцене
         for obj in selection do
         (
@@ -117,8 +118,33 @@
         )
     )
 
+    fn removeUnusedMaterials =
+    (
+        for obj in selection do
+        (
+            print ("Материалов до чистки: " + (obj.material).count as string + " " + obj.name)
+            -- for i = (obj.mat).count to 1 by -1 do
+            -- (
+            --     local found = false
+            --     for data in diffuseMapsData where data.materialID == i do
+            --     (
+            --         found = true
+            --     )
+            --     if not found then
+            --     (
+            --         print("delete")
+            --         obj.mat[i] = undefined
+            --     )
+            -- )
+            mmClean.fix #(obj.material)
+            print ("Материалов после чистки: " + (obj.material).count as string + " " + obj.name)
+        )
+    )
+    
+
     local diffuseNameId = getUniqueMaterialNamesAndIDs()
-    setMaterialIDs(diffuseNameId)
+    setMaterialIDs()
+    removeUnusedMaterials()
 )
 
 
