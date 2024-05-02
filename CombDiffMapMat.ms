@@ -114,9 +114,13 @@
 
     fn removeUnusedMaterials obj diffuseNameId =
     (
-            print ("Материалов до чистки: " + obj.material.materialList.count as string + " " + obj.name)
-            mmClean.fix #(obj.material)
-            print ("Материалов после чистки: " + obj.material.materialList.count as string + " " + obj.name)
+        if classof obj.material == MultiMaterial do
+        (
+            print ("Объект:" + obj.name)
+            print ("Материалов до чистки: " + obj.material.materialList.count as string)
+            mmClean.fix #(obj.material) prompt:false
+            print ("Материалов после чистки: " + obj.material.materialList.count as string)
+        )
     )
     
     for obj in selection do
