@@ -4,14 +4,11 @@
         materialID
     )
 
-    fn getUniqueMaterialNamesAndIDs =
+    fn getUniqueMaterialNamesAndIDs obj =
     (
         -- Создаем массив для хранения информации о DiffuseMap
         diffuseMapsData = #()
 
-        -- Перебираем все объекты в сцене
-        for obj in selection do
-        (
             convertToPoly obj
             -- Проверяем, является ли объект полигональным
             if (classof obj == Editable_Poly) then
@@ -67,14 +64,11 @@
                     )
                 )
             )
-        )
-        
+    return diffuseMapsData
     )
 
-    fn setMaterialIDs = (
+    fn setMaterialIDs obj diffuseNameId = (
         -- Перебираем все объекты в сцене
-        for obj in selection do
-        (
             -- Проверяем, является ли объект полигональным
             if (classof obj == Editable_Poly) then
             (
@@ -105,7 +99,7 @@
                     if diffuseMapName != "" then
                     (
                         -- Перебираем массив для проверки наличия DiffuseMap с таким же именем
-                        for data in diffuseMapsData do
+                        for data in diffuseNameId do
                         (
                             if (data.diffuseMapName == diffuseMapName) then
                             (
@@ -115,36 +109,22 @@
                     )
                 )
             )
-        )
+        return diffuseNameId
     )
 
-    fn removeUnusedMaterials =
+    fn removeUnusedMaterials obj diffuseNameId =
     (
-        for obj in selection do
-        (
-            print ("Материалов до чистки: " + (obj.material).count as string + " " + obj.name)
-            -- for i = (obj.mat).count to 1 by -1 do
-            -- (
-            --     local found = false
-            --     for data in diffuseMapsData where data.materialID == i do
-            --     (
-            --         found = true
-            --     )
-            --     if not found then
-            --     (
-            --         print("delete")
-            --         obj.mat[i] = undefined
-            --     )
-            -- )
+            print ("Материалов до чистки: " + obj.material.materialList.count as string + " " + obj.name)
             mmClean.fix #(obj.material)
-            print ("Материалов после чистки: " + (obj.material).count as string + " " + obj.name)
-        )
+            print ("Материалов после чистки: " + obj.material.materialList.count as string + " " + obj.name)
     )
     
-
-    local diffuseNameId = getUniqueMaterialNamesAndIDs()
-    setMaterialIDs()
-    removeUnusedMaterials()
+    for obj in selection do
+    (
+        local diffuseNameId = getUniqueMaterialNamesAndIDs obj
+        diffuseNameId = setMaterialIDs obj diffuseNameId
+        removeUnusedMaterials obj diffuseNameId
+    )
 )
 
 
