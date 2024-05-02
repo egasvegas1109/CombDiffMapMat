@@ -126,6 +126,7 @@
 rollout combiningMaterialsOnDiffuseMaps "CombDiffMapMat"(
     -- About
     button btn_about "About" width:92 height:23	 align:#right
+    groupBox grB_1 "" pos:[0, 50] width:340 height:80
     label prgrs_mat "Cleaning of unused materials" pos:[15, 40]
     checkbox mt_4_cb checked:true pos:[160, 40] 
     label current_obj_name ""
@@ -160,6 +161,7 @@ rollout combiningMaterialsOnDiffuseMaps "CombDiffMapMat"(
             current_obj_name.text = obj.name
             current_obj_pb.value += 100/selection.count + 1
         )
+        messageBox "Done!"
     )
 
 )
