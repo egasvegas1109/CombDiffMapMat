@@ -116,21 +116,22 @@
     (
         if classof obj.material == MultiMaterial do
         (
-            print ("Объект:" + obj.name)
-            print ("Материалов до чистки: " + obj.material.materialList.count as string)
+            -- print ("Object:" + obj.name)
+            -- print ("Materials before cleaning: " + obj.material.materialList.count as string)
             mmClean.fix #(obj.material) prompt:false
-            print ("Материалов после чистки: " + obj.material.materialList.count as string)
+            -- print ("Materials after cleaning: " + obj.material.materialList.count as string)
         )
     )
 
 rollout combiningMaterialsOnDiffuseMaps "CombDiffMapMat"(
     -- About
     button btn_about "About" width:92 height:23	 align:#right
-    groupBox grB_1 "" pos:[0, 50] width:340 height:80
+    groupBox grB_1 "" pos:[0, 60] width:340 height:80
     label prgrs_mat "Cleaning of unused materials" pos:[15, 40]
-    checkbox mt_4_cb checked:true pos:[160, 40] 
+    checkbox mt_4_cb checked:true pos:[160, 40]
+    label label_clear "" pos:[0, 60]
     label current_obj_name ""
-    progressbar current_obj_pb color:green
+    progressbar current_obj_pb color:green 
     button btnApply "Combine materials"  width:150 align:#center
 
     on btn_about pressed do (
@@ -167,6 +168,6 @@ rollout combiningMaterialsOnDiffuseMaps "CombDiffMapMat"(
 )
 
 -- Отображение интерфейса
-createdialog combiningMaterialsOnDiffuseMaps 340 130
+createdialog combiningMaterialsOnDiffuseMaps 340 140
 
 
