@@ -126,18 +126,19 @@
 rollout combiningMaterialsOnDiffuseMaps "CombDiffMapMat"(
     -- About
     button btn_about "About" width:92 height:23	 align:#right
-    groupBox grB_1 "" pos:[0, 60] width:340 height:80
+    groupBox grB_1 "" pos:[0, 60] width:340 height:110
     label prgrs_mat "Cleaning of unused materials" pos:[15, 40]
     checkbox mt_4_cb checked:true pos:[160, 40]
     label label_clear "" pos:[0, 60]
     label current_obj_name ""
+    label materials_count "Materials before: 0 | After: 0" pos:[15, 100] width:310
     progressbar current_obj_pb color:green 
     button btnApply "Combine materials"  width:150 align:#center
 
     on btn_about pressed do (
         rollout rol_meChecker_about "CombDiffMapMat - About" width:295   (
 
-			label lbl1 "CombDiffMapMat 1.0"  height:17
+			label lbl1 "CombDiffMapMat 1.1"  height:17
 			label lbl6 "Script features:" pos:[11,33] 
 			label lbl7 "- Support for combining materials on multiple objects" pos:[13,53] 
 			label lbl9 "- Removing unused materials" pos:[13,73] 
@@ -154,20 +155,28 @@ rollout combiningMaterialsOnDiffuseMaps "CombDiffMapMat"(
         current_obj_pb.value = 0
         for obj in selection do
         (
+            -- Сохраняем количество материалов до очистки
+            local materials_before = if classof obj.material == MultiMaterial then obj.material.materialList.count else 1
             local diffuseNameId = getUniqueMaterialNamesAndIDs obj
             diffuseNameId = setMaterialIDs obj diffuseNameId
+
             if (mt_4_cb.checked == true) then
                 removeUnusedMaterials obj diffuseNameId
-    
+
+            -- Сохраняем количество материалов после очистки
+            local materials_after = if classof obj.material == MultiMaterial then obj.material.materialList.count else 1
+
+            -- Обновляем текст с количеством материалов
+            materials_count.text = "Materials before: " + materials_before as string + " | After: " + materials_after as string
+
             current_obj_name.text = obj.name
             current_obj_pb.value += 100/selection.count + 1
         )
         messageBox "Done!"
     )
-
 )
 
 -- Отображение интерфейса
-createdialog combiningMaterialsOnDiffuseMaps 340 140
+createdialog combiningMaterialsOnDiffuseMaps 340 163
 
 
