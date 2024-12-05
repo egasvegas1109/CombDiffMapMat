@@ -17,7 +17,7 @@ Scripting - Run Script - CombDiffMapMat.ms
 
 * **Select objects:**
 
-Select the objects in which you want to combine the objects and click the "Combine materials" button.
+Select the objects into which you want to combine the materials and click the "Combine materials" button.
 
 The model should have only standard materials.
 
