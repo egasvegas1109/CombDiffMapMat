@@ -19,6 +19,8 @@ Scripting - Run Script - CombDiffMapMat.ms
 
 Select the objects in which you want to combine the objects and click the "Combine materials" button.
 
+The model should have only standard materials.
+
 ![bandicam 2024-05-03 13-14-00-134 (online-video-cutter com)](https://github.com/egasvegas1109/CombDiffMapMat/assets/50997210/ffe5a807-6c75-4ef8-a2dc-f2495a07632f)
 
 Enjoy!
