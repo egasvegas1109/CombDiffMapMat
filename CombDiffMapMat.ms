@@ -112,6 +112,37 @@
         return diffuseNameId
     )
 
+    fn condenseMtlByID obj = (
+        -- Принудительно конвертируем в Editable Mesh, если объект Editable Poly
+        if classof obj == Editable_Poly do convertToMesh obj
+
+        --If not Multimaterial--
+        if classof obj.material != Multimaterial then return obj
+        MaxID = obj.material.count
+        IDAry = #()
+        for i = 1 to obj.numfaces do (
+            thisID = mod (getFaceMatID obj i) MaxID
+            if thisID == 0 then thisID = MaxID
+            if IDAry[thisID] == undefined then IDAry[thisID] = #()
+            append IDAry[thisID] i
+        )--end for i
+
+        CondenseAry = #()
+        for i = 1 to IDAry.count do
+            if IDAry[i] != undefined then 	append CondenseAry i
+
+        NewMtl = Multimaterial numsubs:CondenseAry.count
+        for i = 1 to CondenseAry.count do (
+            for j = 1 to IDAry[(CondenseAry[i])].count do setFaceMatID obj IDAry[(CondenseAry[i])][j] i
+            NewMtl[i] = obj.material[(CondenseAry[i])]
+        )
+        obj.material = NewMtl
+
+        convertToPoly obj
+        return obj
+    )
+    --end fn CondenseMtlByID
+
     fn removeUnusedMaterials obj diffuseNameId =
     (
         if classof obj.material == MultiMaterial do
@@ -162,6 +193,8 @@ rollout combiningMaterialsOnDiffuseMaps "CombDiffMapMat"(
 
             if (mt_4_cb.checked == true) then
                 removeUnusedMaterials obj diffuseNameId
+
+            condenseMtlByID obj
 
             -- Сохраняем количество материалов после очистки
             local materials_after = if classof obj.material == MultiMaterial then obj.material.materialList.count else 1
